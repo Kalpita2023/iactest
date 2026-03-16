@@ -13,8 +13,10 @@ provider "azurerm" {
   features {}
   # নিচের এই ৩টি লাইন অবশ্যই যোগ করুন
   skip_provider_registration = true
-  subscription_id            = "00000000-0000-0000-0000-000000000000"
-  tenant_id                  = "00000000-0000-0000-0000-000000000000"
+  subscription_id = "00000000-0000-0000-0000-000000000000"
+  tenant_id       = "00000000-0000-0000-0000-000000000000"
+  client_id       = "00000000-0000-0000-0000-000000000000"
+  client_secret   = "dummy-secret"
 }
 
 

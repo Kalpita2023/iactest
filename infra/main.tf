@@ -32,8 +32,8 @@ resource "azurerm_key_vault" "test_kv" {
   sku_name                    = "standard"
 
   access_policy {
-    tenant_id = "00000000-0000-0000-0000-000000000000"
-    object_id = "00000000-0000-0000-0000-000000000000"
+    tenant_id          = "00000000-0000-0000-0000-000000000000"
+    object_id          = "00000000-0000-0000-0000-000000000000"
     secret_permissions = ["Get", "List", "Set"]
   }
 }

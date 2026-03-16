@@ -6,7 +6,6 @@ terraform {
       version = "~> 3.0"
     }
   }
-  # Azure এক্সেস নেই বলে লোকাল স্টেট ব্যবহার করা হয়েছে
   backend "local" {}
 }
 
@@ -15,19 +14,17 @@ provider "azurerm" {
   skip_provider_registration = true
 }
 
-# রিসোর্স গ্রুপ
 resource "azurerm_resource_group" "test_rg" {
   name     = "rg-dummy-qa"
   location = "East US"
 }
 
-# ডামি কি-ভল্ট
 resource "azurerm_key_vault" "test_kv" {
   name                        = "kv-dummy-unit-test-01"
   location                    = azurerm_resource_group.test_rg.location
   resource_group_name         = azurerm_resource_group.test_rg.name
   enabled_for_disk_encryption = true
-  tenant_id                   = "00000000-0000-0000-0000-000000000000" # Dummy ID
+  tenant_id                   = "00000000-0000-0000-0000-000000000000"
   soft_delete_retention_days  = 7
   sku_name                    = "standard"
 

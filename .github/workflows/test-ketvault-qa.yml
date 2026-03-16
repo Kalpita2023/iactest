@@ -1,0 +1,54 @@
+name: "Terraform QA and Unit Test"
+
+# যখনই কোনো ফিচার ব্রাঞ্চে কোড পুশ করা হবে বা পুল রিকোয়েস্ট ওপেন করা হবে, এটি চালু হবে
+on:
+  push:
+    branches: [ "feature/*" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  terraform-qa:
+    name: "Lint, Validate & Test"
+    runs-on: ubuntu-latest
+
+    steps:
+      # ১. রিপোজিটরি থেকে কোড রানারে নিয়ে আসা
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # ২. রানারে টেরাফর্ম ইনস্টল করা
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+
+      # ৩. কোড ফরম্যাটিং চেক (সঠিকভাবে সাজানো আছে কি না)
+      - name: Terraform Format Check
+        working-directory: ./infra
+        run: terraform fmt -check
+
+      # ৪. টেরাফর্ম ইনিশিয়ালাইজ (Azure এক্সেস ছাড়া ডামি মোডে)
+      - name: Terraform Init
+        working-directory: ./infra
+        run: terraform init -backend=false
+
+      # ৫. সিনট্যাক্স ভ্যালিডেশন (কোডে কোনো ব্র্যাকেট বা টাইপিং ভুল আছে কি না)
+      - name: Terraform Validate
+        working-directory: ./infra
+        run: terraform validate
+
+      # ৬. লিন্টিং (TFLint) - সেরা প্র্যাকটিসগুলো চেক করার জন্য
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v3
+      
+      - name: Run TFLint
+        working-directory: ./infra
+        run: |
+          tflint --init
+          tflint
+
+      # ৭. ইউনিট টেস্ট (Terraform Test) - লজিক চেক করার জন্য
+      - name: Terraform Unit Test
+        working-directory: ./infra
+        run: terraform test

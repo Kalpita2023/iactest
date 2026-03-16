@@ -11,7 +11,11 @@ terraform {
 
 provider "azurerm" {
   features {}
+  # নিচের এই ৩টি লাইন অবশ্যই যোগ করুন
   skip_provider_registration = true
+  subscription_id            = "00000000-0000-0000-0000-000000000000"
+  tenant_id                  = "00000000-0000-0000-0000-000000000000"
+}
 }
 
 resource "azurerm_resource_group" "test_rg" {

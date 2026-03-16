@@ -52,3 +52,13 @@ jobs:
       - name: Terraform Unit Test
         working-directory: ./infra
         run: terraform test
+        
+      - name: Terraform Unit Test
+        working-directory: ./infra
+        env:
+          ARM_SUBSCRIPTION_ID: "00000000-0000-0000-0000-000000000000"
+          ARM_TENANT_ID: "00000000-0000-0000-0000-000000000000"
+          ARM_CLIENT_ID: "00000000-0000-0000-0000-000000000000"
+          ARM_CLIENT_SECRET: "dummy-secret"
+          ARM_USE_MSI: "false"
+        run: terraform test
